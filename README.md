@@ -35,3 +35,22 @@ sudo zypper in make gcc
 ```
 git clone git@github.com:eretsym/syntax-analyzer.git
 ```
+
+## Project structure
+
+Please separate source files *(.c)* from header files *(.h)*, by sorting them in their respective folders (`./src` for `.c`, `./include` for `.h`). Test files should be in `./tests/` directory, if any.
+```
+include
+ |- definitions.h
+ |- xxx.h
+ '- ...
+src
+ |- main.c
+ |- xxx.c
+ '- ...
+tests
+ |- test1.txt
+ '- ...
+```
+
+Don't push `.vscode`, `./build/`
