@@ -8,7 +8,7 @@ class Status(Enum):
     SUCCESS = 0,
     ERROR = 1
 
-GROUPE_TABLE = [
+SLR_PARSE = [
     {'vtype': 'S5', 'class': 'S6', '$': 'R4', 'CODE': 1, 'VDECL': 2, 'FDECL': 3, 'CDECL': 4, },
     {'$': 'ACC', },
     {'vtype': 'S5', 'class': 'S6', '$': 'R4', 'CODE': 7, 'VDECL': 2, 'FDECL': 3, 'CDECL': 4, },
@@ -168,11 +168,11 @@ def syntax_parse(symbols: list, index = 0) -> Tuple[Status, str]:
         if (current == 1 and next_one == '$'):
             return (Status.SUCCESS, "OK!")
     
-        if next_one not in GROUPE_TABLE[current].keys():
+        if next_one not in SLR_PARSE[current].keys():
             error = f"symbol {next_one}, line {error_line}"
             return Status.ERROR, error
 
-        action = GROUPE_TABLE[current][next_one]
+        action = SLR_PARSE[current][next_one]
         action_type, action_value = action[0], int(action[1:])
 
         if (action_type == 'S'):
@@ -189,10 +189,10 @@ def syntax_parse(symbols: list, index = 0) -> Tuple[Status, str]:
                     stack.pop()
                     symbols.pop(index - i - 1)
 
-            if GROUPE_TABLE[stack[-1]].get(non_termi) is None:
+            if SLR_PARSE[stack[-1]].get(non_termi) is None:
                 error = f"symbol {next_one}, line {error_line}"
                 return Status.ERROR, error
-            stack.append(GROUPE_TABLE[stack[-1]][non_termi])
+            stack.append(SLR_PARSE[stack[-1]][non_termi])
             if termi != 'epsilon':
                 index -= termi_length - 1
             else:
